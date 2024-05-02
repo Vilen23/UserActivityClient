@@ -1,9 +1,9 @@
-import Image from "next/image";
+import LandingPage from "@/components/LandingPage";
 
 export default function Home() {
   return (
-    <div>
-      Hello
+    <div className="flex justify-center items-center h-[100vh]">
+      <LandingPage/>
     </div>
   );
 }

@@ -18,15 +18,26 @@ model User {
   email     String   @unique
   name      String?
   password  String
+  Twofactor Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   devices   Device[]
+  TwofactorCode Twofactor[]
 }
 
 model Device {
   id        String   @id @default(cuid())
   name      String
   type      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Twofactor{
+  id        String   @id @default(cuid())
+  code      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String

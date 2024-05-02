@@ -45,8 +45,16 @@ export const NEXT_AUTH = {
   ],
   secret: process.env.SECRET,
   callbacks: {
-    async session({ token, session }: any) {
-      session.user.id = token.id;
+    jwt: async ({ token, user }: any) => {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session: async ({ session, token }: any) => {
+      if (token.id) {
+        session.user.id = token.id;
+      }
       return session;
     },
   },
