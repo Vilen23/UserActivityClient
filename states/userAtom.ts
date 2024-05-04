@@ -10,3 +10,7 @@ export const userAtom = atom({
     },
     effects_UNSTABLE: [persistAtom],
 })
+export const loginAtom = atom({
+    key: "login",
+    default: false,
+})

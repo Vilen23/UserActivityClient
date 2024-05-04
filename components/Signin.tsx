@@ -31,7 +31,7 @@ export default function Signin() {
             password:userInfo.password,
             callbackUrl:"/"
         })
-        console.log(res);
+        
     }
     
   return (

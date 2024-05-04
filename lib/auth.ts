@@ -1,6 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import db from "./db";
+import db from "../../backend/src/utils/db";
+import axios from "axios";
 export const NEXT_AUTH = {
   providers: [
     CredentialsProvider({
@@ -11,33 +12,12 @@ export const NEXT_AUTH = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-        const hashedpassword = await bcrypt.hash(credentials.password, 10);
-        const existingUser = await db.user.findFirst({
-          where: {
-            name: credentials.name,
-          },
+        const response = await axios.post("http://localhost:8000/api/auth/signin",{
+          credentials
         });
-        if (existingUser) {
-          const check = await bcrypt.compare(
-            credentials.password,
-            existingUser.password
-          );
-          if (!check) return null;
-          const { password, ...userWithoutPassword } = existingUser;
-          return userWithoutPassword;
-        }
-        try {
-          const user = await db.user.create({
-            data: {
-              name: credentials.name,
-              password: hashedpassword,
-              email: credentials.email,
-            },
-          });
-          const { password, ...userWithoutPassword } = user;
-          return userWithoutPassword;
-        } catch (error) {
-          console.log(error);
+        console.log(response.data)
+        if(response.status === 200){
+          return response.data;
         }
         return null;
       },
@@ -48,12 +28,14 @@ export const NEXT_AUTH = {
     jwt: async ({ token, user }: any) => {
       if (user) {
         token.id = user.id;
+        token.Twofactor = user.Twofactor;
       }
       return token;
     },
     session: async ({ session, token }: any) => {
       if (token.id) {
         session.user.id = token.id;
+        session.user.Twofactor = token.Twofactor;
       }
       return session;
     },
