@@ -19,4 +19,4 @@ export const twofactorAtom = atom({
     key: "twofactor",
     default: false,
     effects_UNSTABLE: [persistAtom],
-})
+}) 

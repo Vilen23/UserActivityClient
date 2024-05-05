@@ -8,7 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiMobile3 } from "react-icons/ci";
 import { FaDesktop, FaSignOutAlt } from "react-icons/fa";
@@ -21,9 +22,25 @@ interface DeviceProps {
 }
 
 export default function page() {
+  const router = useRouter();
   const session = useSession();
   const [devices, setDevices] = useState<DeviceProps[]>([]);
   const [loading, setLoading] = useState(true);
+  console.log(session.data?.user);
+  const checkDevice = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:8000/api/devices/checkDevice/?deviceId=${session.data?.user.deviceId}}`
+      );
+      console.log(res);
+    } catch (error) {
+      console.log("Failed to check device:", error);
+      signOut();
+      setLoading(false);
+      router.push("/");
+    }
+  };
 
   useEffect(() => {
     try {
@@ -31,7 +48,6 @@ export default function page() {
         const res = await axios.get(
           `http://localhost:8000/api/devices/getDevices/?id=${session.data?.user.id}`
         );
-        console.log(devices);
         setDevices(res.data.Devices);
         setLoading(false);
       };
@@ -42,9 +58,25 @@ export default function page() {
 
       ws.onmessage = (event) => {
         const message = JSON.parse(event.data);
+        console.log(message);
         if (message.type === "device_added") {
           console.log("Device added");
           setDevices((prevDevices) => [...prevDevices, message.device]);
+        }
+        if (
+          message.type === "device_removed" &&
+          session.data?.user.deviceId === message.deviceId
+        ) {
+          console.log("Device Removed");
+          signOut({
+            redirect: true,
+            callbackUrl: "/",
+          });
+        } else if (message.type === "device_removed") {
+          console.log("Other Device got removed");
+          setDevices((prevDevices) =>
+            prevDevices.filter((device) => device.id !== message.deviceId)
+          );
         }
       };
       ws.onclose = () => {
@@ -64,7 +96,6 @@ export default function page() {
       const res = await axios.post(
         `http://localhost:8000/api/devices/removeDevice/?deviceId=${id}`
       );
-      console.log(res.data);
       setDevices((prevDevices) =>
         prevDevices.filter((device) => device.id !== id)
       );
@@ -75,7 +106,11 @@ export default function page() {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <div className="w-[100vw] h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-10 mt-10 place-items-center">
+    <div
+      className={`w-[100vw] place-self-center grid grid-cols-1 ${
+        devices.length > 1 && "md:grid-cols-2"
+      } gap-4 mt-10 place-items-center`}
+    >
       {devices.map((device) => {
         return (
           <Card key={device.id}>
@@ -96,7 +131,8 @@ export default function page() {
                 </Button>
               </CardTitle>
               <CardDescription className="text-xs">
-                You are currently signed into this device
+                {session.data?.user.deviceId === device.id &&
+                  "You are currently signed into this device"}
               </CardDescription>
             </CardHeader>
             <CardContent>

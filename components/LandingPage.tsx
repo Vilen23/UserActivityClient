@@ -15,6 +15,50 @@ export default function LandingPage() {
   const [login, setLogin] = useRecoilState(loginAtom);
   const [twofactor, setTwofactor] = useRecoilState(twofactorAtom);
 
+  // const checkDevice = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `http://localhost:8000/api/devices/checkDevice/?deviceId=${session.data?.user.deviceId}}`
+  //     );
+  //     console.log(res);
+  //     if (res.status !== 200) {
+  //       signOut();
+  //       router.push("/")
+        
+  //     }
+  //   } catch (error) {
+  //     console.log("Failed to check device:", error);
+  //     signOut();
+  //     router.push("/")
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   try {
+  //     const ws = new WebSocket("ws://localhost:8000");
+  //     ws.onopen = () => {
+  //       console.log("WebSocket Connected");
+  //     };
+
+  //     ws.onmessage = (event) => {
+  //       const message = JSON.parse(event.data);
+  //       if (message.type === "device_removed") {
+  //         console.log("Checking if this device got removed");
+  //         checkDevice();
+  //       }
+  //     };
+  //     ws.close = () => {
+  //       console.log("Websocket closed");
+  //     };
+
+  //     return () => {
+  //       ws.close();
+  //     };
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, []);
+
   const Add2Fa = async () => {
     if (!session.data?.user) return { error: "You are not logged in" };
     const response = await axios.post("http://localhost:8000/api/auth/2fa", {
@@ -31,6 +75,7 @@ export default function LandingPage() {
   if (session.data.user.Twofactor && !login) {
     return <TwoFactor />;
   }
+  console.log(session.data);
 
   return (
     <div className="flex flex-col">
@@ -50,9 +95,12 @@ export default function LandingPage() {
             Add 2Fa
           </Button>
         )}
-        <Button variant="outline" onClick={()=>{
-          router.push("/history")
-        }}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            router.push("/history");
+          }}
+        >
           Check History
         </Button>
       </div>

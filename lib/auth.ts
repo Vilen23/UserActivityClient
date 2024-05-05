@@ -12,12 +12,17 @@ export const NEXT_AUTH = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-        const response = await axios.post("http://localhost:8000/api/auth/signin",{
-          credentials
-        });
-        console.log(response.data)
-        if(response.status === 200){
-          return response.data;
+        const response = await axios.post(
+          "http://localhost:8000/api/auth/signin",
+          {
+            credentials,
+          }
+        );
+        if (response.status === 200) {
+          return {
+            ...response.data.userWithoutPassword,
+            deviceId: response.data.session.deviceId,
+          };
         }
         return null;
       },
@@ -29,6 +34,7 @@ export const NEXT_AUTH = {
       if (user) {
         token.id = user.id;
         token.Twofactor = user.Twofactor;
+        token.deviceId = user.deviceId;
       }
       return token;
     },
@@ -36,6 +42,7 @@ export const NEXT_AUTH = {
       if (token.id) {
         session.user.id = token.id;
         session.user.Twofactor = token.Twofactor;
+        session.user.deviceId = token.deviceId;
       }
       return session;
     },

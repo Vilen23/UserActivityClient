@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UserProps } from "@/lib/models"
 import { signIn } from "next-auth/react"
-import {useRouter} from 'next/navigation'
 import { useState } from "react"
 export default function Signin() {
     const [userInfo,setUserInfo] = useState<UserProps>({
