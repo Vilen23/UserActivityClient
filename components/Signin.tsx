@@ -37,7 +37,7 @@ export default function Signin() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button  className='bg-black border-2 border-black hover:text-black transition-all duration-300 hover:bg-white px-3 py-2 text-white rounded-3xl'>Sign In</button>
+        <button  className='bg-black border-2 border-black hover:text-black transition-all duration-300 hover:bg-white px-3 py-2 text-white rounded-3xl cursor-pointer'>Sign In</button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

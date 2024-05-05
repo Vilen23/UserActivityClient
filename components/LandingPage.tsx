@@ -1,16 +1,19 @@
 "use client";
 import { signOut, useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Signin from "./Signin";
 import { Button } from "./ui/button";
 import axios from "axios";
 import CheckTwoCode from "./CheckTwoCode";
-import {TwoFactor} from "./TwoFactor";
+import { TwoFactor } from "./TwoFactor";
 import { useRecoilState } from "recoil";
-import { loginAtom } from "@/states/userAtom";
+import { loginAtom, twofactorAtom } from "@/states/userAtom";
+import { useRouter } from "next/navigation";
 export default function LandingPage() {
   const session = useSession();
-  const [login,setLogin] = useRecoilState(loginAtom);
+  const router = useRouter();
+  const [login, setLogin] = useRecoilState(loginAtom);
+  const [twofactor, setTwofactor] = useRecoilState(twofactorAtom);
 
   const Add2Fa = async () => {
     if (!session.data?.user) return { error: "You are not logged in" };
@@ -18,35 +21,41 @@ export default function LandingPage() {
       id: session.data.user.id,
     });
     if (response.status === 200) {
-      console.log("2fa added");
+      setTwofactor(true);
     }
   };
 
   if (!session.data?.user) {
     return <Signin />;
   }
-
-  if(session.data.user.Twofactor && !login){
-    return <TwoFactor/>
+  if (session.data.user.Twofactor && !login) {
+    return <TwoFactor />;
   }
 
   return (
-    <div className="flex gap-4">
-      <Button
-        variant="outline"
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Logout
-      </Button>
-      {session.data.user.Twofactor ? (
-        <CheckTwoCode />
-      ) : (
-        <Button onClick={Add2Fa} variant="outline">
-          Add 2Fa
+    <div className="flex flex-col">
+      <div className="flex gap-4">
+        <Button
+          variant="outline"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Logout
         </Button>
-      )}
+        {session.data.user.Twofactor || twofactor ? (
+          <CheckTwoCode />
+        ) : (
+          <Button onClick={Add2Fa} variant="outline">
+            Add 2Fa
+          </Button>
+        )}
+        <Button variant="outline" onClick={()=>{
+          router.push("/history")
+        }}>
+          Check History
+        </Button>
+      </div>
     </div>
   );
 }

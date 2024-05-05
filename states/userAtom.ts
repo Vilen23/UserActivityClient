@@ -14,3 +14,9 @@ export const loginAtom = atom({
     key: "login",
     default: false,
 })
+
+export const twofactorAtom = atom({
+    key: "twofactor",
+    default: false,
+    effects_UNSTABLE: [persistAtom],
+})
