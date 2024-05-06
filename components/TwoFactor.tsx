@@ -15,7 +15,7 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
-import { loginAtom } from "@/states/userAtom";
+import { loginAtom } from "@/states/Atoms/userAtom";
 import { useRouter } from "next/navigation";
 
 export function TwoFactor() {

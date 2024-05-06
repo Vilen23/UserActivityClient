@@ -7,41 +7,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { deviceAtom } from "@/states/Atoms/deviceAtoms";
+import useCheckDevice from "@/states/Hooks/checkDevice";
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiMobile3 } from "react-icons/ci";
 import { FaDesktop, FaSignOutAlt } from "react-icons/fa";
+import { useRecoilState } from "recoil";
 
-interface DeviceProps {
-  id: string;
-  name: string;
-  type: string;
-  createdAt: string;
-}
 
 export default function page() {
   const router = useRouter();
   const session = useSession();
-  const [devices, setDevices] = useState<DeviceProps[]>([]);
+  const [devices, setDevices] = useRecoilState(deviceAtom);
   const [loading, setLoading] = useState(true);
-  console.log(session.data?.user);
-  const checkDevice = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(
-        `http://localhost:8000/api/devices/checkDevice/?deviceId=${session.data?.user.deviceId}}`
-      );
-      console.log(res);
-    } catch (error) {
-      console.log("Failed to check device:", error);
-      signOut();
-      setLoading(false);
-      router.push("/");
-    }
-  };
 
+  useCheckDevice();
   useEffect(() => {
     try {
       const fetchDevices = async () => {
@@ -62,21 +45,6 @@ export default function page() {
         if (message.type === "device_added") {
           console.log("Device added");
           setDevices((prevDevices) => [...prevDevices, message.device]);
-        }
-        if (
-          message.type === "device_removed" &&
-          session.data?.user.deviceId === message.deviceId
-        ) {
-          console.log("Device Removed");
-          signOut({
-            redirect: true,
-            callbackUrl: "/",
-          });
-        } else if (message.type === "device_removed") {
-          console.log("Other Device got removed");
-          setDevices((prevDevices) =>
-            prevDevices.filter((device) => device.id !== message.deviceId)
-          );
         }
       };
       ws.onclose = () => {

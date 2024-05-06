@@ -7,57 +7,15 @@ import axios from "axios";
 import CheckTwoCode from "./CheckTwoCode";
 import { TwoFactor } from "./TwoFactor";
 import { useRecoilState } from "recoil";
-import { loginAtom, twofactorAtom } from "@/states/userAtom";
+import { loginAtom, twofactorAtom } from "@/states/Atoms/userAtom";
 import { useRouter } from "next/navigation";
+import useCheckDevice from "@/states/Hooks/checkDevice";
 export default function LandingPage() {
   const session = useSession();
   const router = useRouter();
   const [login, setLogin] = useRecoilState(loginAtom);
   const [twofactor, setTwofactor] = useRecoilState(twofactorAtom);
-
-  // const checkDevice = async () => {
-  //   try {
-  //     const res = await axios.get(
-  //       `http://localhost:8000/api/devices/checkDevice/?deviceId=${session.data?.user.deviceId}}`
-  //     );
-  //     console.log(res);
-  //     if (res.status !== 200) {
-  //       signOut();
-  //       router.push("/")
-        
-  //     }
-  //   } catch (error) {
-  //     console.log("Failed to check device:", error);
-  //     signOut();
-  //     router.push("/")
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   try {
-  //     const ws = new WebSocket("ws://localhost:8000");
-  //     ws.onopen = () => {
-  //       console.log("WebSocket Connected");
-  //     };
-
-  //     ws.onmessage = (event) => {
-  //       const message = JSON.parse(event.data);
-  //       if (message.type === "device_removed") {
-  //         console.log("Checking if this device got removed");
-  //         checkDevice();
-  //       }
-  //     };
-  //     ws.close = () => {
-  //       console.log("Websocket closed");
-  //     };
-
-  //     return () => {
-  //       ws.close();
-  //     };
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, []);
+  useCheckDevice();
 
   const Add2Fa = async () => {
     if (!session.data?.user) return { error: "You are not logged in" };
