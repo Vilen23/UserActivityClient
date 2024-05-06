@@ -17,7 +17,7 @@ export default function LandingPage() {
   const [twofactor, setTwofactor] = useRecoilState(twofactorAtom);
   
   useCheckDevice();
-
+  console.log("hi")
   const Add2Fa = async () => {
     if (!session.data?.user) return { error: "You are not logged in" };
     const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/2fa`, {
