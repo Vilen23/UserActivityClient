@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import { loginAtom } from "@/states/Atoms/userAtom";
 import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "@/config";
 
 export function TwoFactor() {
   const router = useRouter();
@@ -27,10 +28,10 @@ export function TwoFactor() {
   const handleInput = async () => {
     try {
       const getKey = await axios.get(
-        `http://localhost:8000/api/auth/getToken/?id=${session.data?.user.id}`
+        `${BACKEND_URL}/api/auth/getToken/?id=${session.data?.user.id}`
       );
       const verify = await axios.get(
-        `http://localhost:8000/api/auth/verifyToken/?otp=${code}&key=${getKey.data.token.code}`
+        `${BACKEND_URL}/api/auth/verifyToken/?otp=${code}&key=${getKey.data.token.code}`
       );
       if (verify.status === 200) {
         setLogin(true);

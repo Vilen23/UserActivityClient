@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { BACKEND_URL } from "@/config";
 import { deviceAtom } from "@/states/Atoms/deviceAtoms";
 import useCheckDevice from "@/states/Hooks/checkDevice";
 import axios from "axios";
@@ -26,7 +27,7 @@ export default function page() {
     try {
       const fetchDevices = async () => {
         const res = await axios.get(
-          `http://localhost:8000/api/devices/getDevices/?id=${session.data?.user.id}`
+          `${BACKEND_URL}/api/devices/getDevices/?id=${session.data?.user.id}`
         );
         setDevices(res.data.Devices);
         setLoading(false);
@@ -59,7 +60,7 @@ export default function page() {
   const handleSignout = (id: string) => async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/devices/removeDevice/?deviceId=${id}`
+        `${BACKEND_URL}/api/devices/removeDevice/?deviceId=${id}`
       );
       setDevices((prevDevices) =>
         prevDevices.filter((device) => device.id !== id)

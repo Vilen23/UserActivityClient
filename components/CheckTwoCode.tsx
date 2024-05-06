@@ -16,6 +16,7 @@ import { Label } from "./ui/label";
 import { Copy } from "lucide-react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { BACKEND_URL } from "@/config";
 
 export default function CheckTwoCode() {
   const session = useSession();
@@ -23,7 +24,7 @@ export default function CheckTwoCode() {
   
   useEffect(()=>{
     const getToken = async()=>{
-      const res = await axios.get(`http://localhost:8000/api/auth/getToken/?id=${session.data?.user.id}`);
+      const res = await axios.get(`${BACKEND_URL}/api/auth/getToken/?id=${session.data?.user.id}`);
       setToken(res.data.token.code);
     }       
     getToken();                              
