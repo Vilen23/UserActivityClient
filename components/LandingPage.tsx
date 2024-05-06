@@ -29,12 +29,12 @@ export default function LandingPage() {
   };
 
 
-  if (!session.data?.user) {
-    return <Signin />;
-  }
-  if (session.data.user.Twofactor && !login) {
-    return <TwoFactor />;
-  }
+  // if (!session.data?.user) {
+  //   return <Signin />;
+  // }
+  // if (session.data.user.Twofactor && !login) {
+  //   return <TwoFactor />;
+  // }
 
   return (
     <div className="flex flex-col">
@@ -47,7 +47,7 @@ export default function LandingPage() {
         >
           Logout
         </Button>
-        {session.data.user.Twofactor || twofactor ? (
+        {session?.data?.user?.Twofactor || twofactor ? (
           <CheckTwoCode />
         ) : (
           <Button onClick={Add2Fa} variant="outline">
