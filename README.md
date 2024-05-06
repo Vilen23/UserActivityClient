@@ -1,37 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 # UserActivityClient
+
+# About Project
+
+## The architecture and workflow is explained below
+
+# About Tech Stack
+- The Frontend is done in Next.js and the backend is in Node.js and Express.js.
+- For the database I have used PostgreSql and Prisma as the ORM.
+- For the Two-Factor Authentication I have used speakeasy library.
+- I Have written all the code in Typescript.
+- The realtime experience is given by the ws library for websockets.
+- The sessions are managed by next-auth providing a layer between the Node.js backend and Next.js Frontend.
+
+# Workflow
+- The user gets a signin prompt upon visiting where he can create/login into existing account in which email has to be unique.
+- Upon signin the db stores the userinfo , deviceInfo and adds a session connecting the user and the device.
+- Then from frontend we check if the two factor is enabled for the user.If enabled then ask for two factor code from their authenticator app.
+- After giving the right code user can access the dashboard where they have the option to check for the Two-factor key , Log out , or check for the current logged in devices.
+- In the current logged in devices section if the same id gets logged in from somewhere else it gets updated in realtime as the websocket sends a message upon signin and the devices section checks for the particular message of device added and update the state.
+- The user has the autority to remove any existing session from the Devices section.
