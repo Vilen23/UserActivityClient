@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,7 +15,7 @@ import { CiMobile3 } from "react-icons/ci";
 import { FaDesktop, FaSignOutAlt } from "react-icons/fa";
 import { useRecoilState } from "recoil";
 
-export default function page() {
+const Page = () => {
   const session = useSession();
   const [devices, setDevices] = useRecoilState(deviceAtom);
   const [loading, setLoading] = useState(true);
@@ -115,4 +114,6 @@ export default function page() {
       })}
     </div>
   );
-}
+};
+
+export default Page;
