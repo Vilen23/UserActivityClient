@@ -27,10 +27,10 @@ export function TwoFactor() {
   const handleInput = async () => {
     try {
       const getKey = await axios.get(
-        `${process.env.BACKEND_URl}/api/auth/getToken/?id=${session.data?.user.id}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/getToken/?id=${session.data?.user.id}`
       );
       const verify = await axios.get(
-        `${process.env.BACKEND_URl}/api/auth/verifyToken/?otp=${code}&key=${getKey.data.token.code}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/verifyToken/?otp=${code}&key=${getKey.data.token.code}`
       );
       if (verify.status === 200) {
         setLogin(true);

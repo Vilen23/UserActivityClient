@@ -20,7 +20,7 @@ export default function LandingPage() {
 
   const Add2Fa = async () => {
     if (!session.data?.user) return { error: "You are not logged in" };
-    const response = await axios.post(`${process.env.BACKEND_URl}/api/auth/2fa`, {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/2fa`, {
       id: session.data.user.id,
     });
     if (response.status === 200) {

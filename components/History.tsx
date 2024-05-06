@@ -25,7 +25,7 @@ export default function Histoy() {
     try {
       const fetchDevices = async () => {
         const res = await axios.get(
-          `${process.env.BACKEND_URl}/api/devices/getDevices/?id=${session.data?.user.id}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/devices/getDevices/?id=${session.data?.user.id}`
         );
         setDevices(res.data.Devices);
         setLoading(false);
@@ -53,12 +53,12 @@ export default function Histoy() {
     } catch (error) {
       console.log(error);
     }
-  }, [session]);
+  }, [session,setDevices]);
 
   const handleSignout = (id: string) => async () => {
     try {
       const res = await axios.post(
-        `${process.env.BACKEND_URl}/api/devices/removeDevice/?deviceId=${id}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/devices/removeDevice/?deviceId=${id}`
       );
       setDevices((prevDevices) =>
         prevDevices.filter((device) => device.id !== id)

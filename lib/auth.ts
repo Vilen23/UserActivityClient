@@ -12,7 +12,7 @@ export const NEXT_AUTH = {
       },
       async authorize(credentials: any) {
         const response = await axios.post(
-          `${process.env.BACKEND_URl}/api/auth/signin`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signin`,
           {
             credentials,
           }

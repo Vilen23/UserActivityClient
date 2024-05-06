@@ -23,11 +23,11 @@ export default function CheckTwoCode() {
   
   useEffect(()=>{
     const getToken = async()=>{
-      const res = await axios.get(`${process.env.BACKEND_URl}/api/auth/getToken/?id=${session.data?.user.id}`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/getToken/?id=${session.data?.user.id}`);
       setToken(res.data.token.code);
     }       
     getToken();                              
-  },[])
+  },[session.data?.user.id])
 
   const copyToClipboard = () => {
     const input = document.getElementById('link') as HTMLInputElement;
