@@ -10,7 +10,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { loginAtom, twofactorAtom } from "@/states/Atoms/userAtom";
 import { useRouter } from "next/navigation";
 import useCheckDevice from "@/states/Hooks/checkDevice";
-import { BACKEND_URL } from "@/config";
 export default function LandingPage() {
   const router = useRouter();
   const session = useSession();
@@ -21,7 +20,7 @@ export default function LandingPage() {
 
   const Add2Fa = async () => {
     if (!session.data?.user) return { error: "You are not logged in" };
-    const response = await axios.post(`${BACKEND_URL}/api/auth/2fa`, {
+    const response = await axios.post(`${process.env.BACKEND_URl}/api/auth/2fa`, {
       id: session.data.user.id,
     });
     if (response.status === 200) {

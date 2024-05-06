@@ -1,6 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
-import { BACKEND_URL } from "@/config";
+
 export const NEXT_AUTH = {
   providers: [
     CredentialsProvider({
@@ -12,7 +12,7 @@ export const NEXT_AUTH = {
       },
       async authorize(credentials: any) {
         const response = await axios.post(
-          `${BACKEND_URL}/api/auth/signin`,
+          `${process.env.BACKEND_URl}/api/auth/signin`,
           {
             credentials,
           }
