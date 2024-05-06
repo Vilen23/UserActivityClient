@@ -25,7 +25,7 @@ export default function Histoy() {
     try {
       const fetchDevices = async () => {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/devices/getDevices/?id=${session.data?.user.id}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/devices/getDevices`
         );
         setDevices(res.data.Devices);
         setLoading(false);
