@@ -10,7 +10,7 @@ const useCheckDevice = () => {
     const [devices, setDevices] = useRecoilState(deviceAtom);
     useEffect(() => {
         try {
-            const ws = new WebSocket("ws://localhost:8000");
+            const ws = new WebSocket("ws://uabackend.onrender.com");
             ws.onopen = () => {
                 console.log("WebSocket connection established");
             };

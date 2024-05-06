@@ -30,7 +30,7 @@ export default function Histoy() {
         setDevices(res.data.Devices);
         setLoading(false);
       };
-      const ws = new WebSocket("ws://localhost:8000");
+      const ws = new WebSocket("ws://uabackend.onrender.com");
       ws.onopen = () => {
         console.log("Websocket connected");
       };
