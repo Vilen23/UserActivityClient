@@ -15,26 +15,27 @@ export default function LandingPage() {
   const session = useSession();
   const login = useRecoilValue(loginAtom);
   const [twofactor, setTwofactor] = useRecoilState(twofactorAtom);
-  
+
   useCheckDevice();
-  console.log("hi")
   const Add2Fa = async () => {
     if (!session.data?.user) return { error: "You are not logged in" };
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/2fa`, {
-      id: session.data.user.id,
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/2fa`,
+      {
+        id: session.data.user.id,
+      }
+    );
     if (response.status === 200) {
       setTwofactor(true);
     }
   };
 
-
-  // if (!session.data?.user) {
-  //   return <Signin />;
-  // }
-  // if (session.data.user.Twofactor && !login) {
-  //   return <TwoFactor />;
-  // }
+  if (!session.data?.user) {
+    return <Signin />;
+  }
+  if (session.data.user.Twofactor && !login) {
+    return <TwoFactor />;
+  }
 
   return (
     <div className="flex flex-col">
