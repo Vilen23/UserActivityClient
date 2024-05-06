@@ -1,5 +1,3 @@
-# UserActivityClient
-
 # About Project
 
 ## The architecture and workflow is explained below
