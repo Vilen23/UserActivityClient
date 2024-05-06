@@ -15,21 +15,21 @@ import { UserProps } from "@/lib/models";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { AlertError } from "./AlertError";
+
 export default function Signin() {
+  const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState<UserProps>({
     name: "",
     password: "",
     email: "",
   });
-  const [error, setError] = useState("");
 
   const handleSignin = async () => {
     if (!userInfo.email || !userInfo.password || !userInfo.name) {
-      console.log("hello");
       setError("Please fill all the fields");
       return;
     }
-    const res = await signIn("credentials", {
+    await signIn("credentials", {
       redirect: false,
       name: userInfo.name,
       email: userInfo.email,

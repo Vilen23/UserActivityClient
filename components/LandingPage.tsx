@@ -6,15 +6,16 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import CheckTwoCode from "./CheckTwoCode";
 import { TwoFactor } from "./TwoFactor";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { loginAtom, twofactorAtom } from "@/states/Atoms/userAtom";
 import { useRouter } from "next/navigation";
 import useCheckDevice from "@/states/Hooks/checkDevice";
 export default function LandingPage() {
-  const session = useSession();
   const router = useRouter();
-  const [login, setLogin] = useRecoilState(loginAtom);
+  const session = useSession();
+  const login = useRecoilValue(loginAtom);
   const [twofactor, setTwofactor] = useRecoilState(twofactorAtom);
+  
   useCheckDevice();
 
   const Add2Fa = async () => {
@@ -27,13 +28,13 @@ export default function LandingPage() {
     }
   };
 
+
   if (!session.data?.user) {
     return <Signin />;
   }
   if (session.data.user.Twofactor && !login) {
     return <TwoFactor />;
   }
-  console.log(session.data);
 
   return (
     <div className="flex flex-col">

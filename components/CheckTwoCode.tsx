@@ -20,6 +20,7 @@ import { useSession } from "next-auth/react";
 export default function CheckTwoCode() {
   const session = useSession();
   const [token,setToken] = useState("");
+  
   useEffect(()=>{
     const getToken = async()=>{
       const res = await axios.get(`http://localhost:8000/api/auth/getToken/?id=${session.data?.user.id}`);

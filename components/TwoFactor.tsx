@@ -19,10 +19,11 @@ import { loginAtom } from "@/states/Atoms/userAtom";
 import { useRouter } from "next/navigation";
 
 export function TwoFactor() {
+  const router = useRouter();
   const session = useSession();
   const [code, setCode] = useState<string>("");
   const setLogin = useSetRecoilState(loginAtom);
-  const router = useRouter();
+  
   const handleInput = async () => {
     try {
       const getKey = await axios.get(

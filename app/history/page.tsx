@@ -11,15 +11,12 @@ import { deviceAtom } from "@/states/Atoms/deviceAtoms";
 import useCheckDevice from "@/states/Hooks/checkDevice";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiMobile3 } from "react-icons/ci";
 import { FaDesktop, FaSignOutAlt } from "react-icons/fa";
 import { useRecoilState } from "recoil";
 
-
 export default function page() {
-  const router = useRouter();
   const session = useSession();
   const [devices, setDevices] = useRecoilState(deviceAtom);
   const [loading, setLoading] = useState(true);

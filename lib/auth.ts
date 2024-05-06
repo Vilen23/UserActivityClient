@@ -1,6 +1,4 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
-import db from "../../backend/src/utils/db";
 import axios from "axios";
 export const NEXT_AUTH = {
   providers: [

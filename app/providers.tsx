@@ -1,5 +1,4 @@
 "use client";
-import useCheckDevice from "@/states/Hooks/checkDevice";
 import { SessionProvider } from "next-auth/react";
 import { RecoilRoot } from "recoil";
 
